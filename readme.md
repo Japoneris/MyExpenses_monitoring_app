@@ -1,56 +1,74 @@
 # Expense Analyzer
 
-Collect data from [`MyExpenses` app](https://www.myexpenses.mobi/fr/) (do `export_to_csv`).
+Dashboard to analyze your Expenses.
 
-This app help you to analyze budget, month after month.
+Expenses files comes from [`MyExpenses` app](https://www.myexpenses.mobi/fr/) (do `export_to_csv`).
+
+## Data
+
+`.csv` files from `MyExpenses`  should be stored in `data/`
+
+## Features
+
+- Month per month overview
+- Detail per product category
+- Comparison per user (who pays more / is the budget balanced?)
+- Full detail of raw transaction if needed
+- Automatic sheat aggregation:
+  - Remove duplicates
+  - Split by year
+  - Group by month
+
+## Screenshots
+
+TODO
 
 
+---
 
 # Usage 
 
-## Local Development
+## Run with Python
 
-- English (default): `streamlit run src/app.py`
-- French: `APP_LANGUAGE=fr streamlit run src/app.py`
+Create a virtual env: 
 
-## Docker Compose
-
-1. Copy the environment file: `cp .env.example .env`
-2. Edit `.env` to set your preferences:
-   - `APP_LANGUAGE`: Set to `en` (English) or `fr` (French)
-   - `DATA_DIR`: Path to your data directory (default: `./data`)
-3. Build and start the container: `docker-compose up -d`
-4. Access the app at: http://localhost:8501
-5. Stop the container: `docker-compose down`
-
-Example with custom data directory:
-```bash
-DATA_DIR=/path/to/your/data APP_LANGUAGE=fr docker-compose up -d
+```sh
+python3 -m venv venv
 ```
 
-# Data 
+Activate it:
 
-## Location
+```sh
+source venv/bin/activate
+```
 
-`.csv` files are stored in `data/`
+Install the libs:
 
-## Format
+```sh
+pip3 install -r requirements.txt
+```
 
-Here are the columns you will find in any files.
+Run:
+
+```sh
+cd src
+streamlit run app.py
+```
+
+Access the app at: [http://localhost:8501](http://localhost:8501)
 
 
-# Dashboard
 
-The dashboard is made with streamlit.
+Note: you can configure language (`en` or `fr`) by setting
+```sh
+APP_LANGUAGE=fr streamlit run src/app.py
+```
 
-It should help to visualizer:
 
-- total expenses month per month
-- expensive per person month per month
-- get access to the detailed sheat of a given month
-- A total per year should be done.
+## Run with Docker Compose
 
-# Notes
+0. Check the docker compose to modify env variables if needed
+1. Build and start the container: `docker compose up -d`
+2. Access the app at: http://localhost:8501
+3. Stop the container: `docker compose down`
 
-Some expense pages have duplicated entries (with same date, same amount).
-You need to remove them, as this is just an export issue.
