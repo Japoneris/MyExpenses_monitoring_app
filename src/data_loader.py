@@ -134,6 +134,10 @@ def load_data() -> pd.DataFrame:
 
     combined = pd.concat(all_data, ignore_index=True)
 
+    # Ensure Notes column exists
+    if "Notes" not in combined.columns:
+        combined["Notes"] = ""
+
     # Parse dates with error handling
     combined["Date"] = pd.to_datetime(combined["Date"], format="%d/%m/%Y", errors="coerce")
 
@@ -256,6 +260,10 @@ def load_single_file(filename: str) -> pd.DataFrame:
         encoding="utf-8"
     )
     df["source_file"] = filename
+
+    # Ensure Notes column exists
+    if "Notes" not in df.columns:
+        df["Notes"] = ""
 
     # Parse dates with error handling
     df["Date"] = pd.to_datetime(df["Date"], format="%d/%m/%Y", errors="coerce")
