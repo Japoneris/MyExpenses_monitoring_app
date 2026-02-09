@@ -1,5 +1,4 @@
-# Use Ingenico's base Python image from the internal Artifactory
-FROM artfact-rndsoft.ingenico.com/docker-public/library/python:3.12-slim
+FROM python:3.12
 
 # Set the working directory inside the container
 WORKDIR /app
