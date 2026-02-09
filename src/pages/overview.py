@@ -2,11 +2,35 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-from data_loader import load_data, get_persons, get_years, get_categories, fill_missing_months
+from data_loader import load_data, get_persons, get_years, get_categories, fill_missing_months, check_invalid_dates
 from i18n import t, get_month_names
 
 
 st.title(t("overview.title"))
+
+# Check for invalid dates and display warnings
+invalid_dates_df = check_invalid_dates()
+if not invalid_dates_df.empty:
+    with st.expander(f"**Warning: {len(invalid_dates_df)} row(s) with invalid dates found (click to expand)**", expanded=True):
+        st.warning("The following rows have invalid/broken dates and will be discarded:")
+        display_cols = ["source_file", "row_number", "original_date"]
+        # Add other available columns for context
+        for col in ["Tiers", "Dépense", "Catégorie", "Notes"]:
+            if col in invalid_dates_df.columns:
+                display_cols.append(col)
+        st.dataframe(
+            invalid_dates_df[display_cols],
+            hide_index=True,
+            column_config={
+                "source_file": "File",
+                "row_number": "Row #",
+                "original_date": "Invalid Date Value",
+                "Tiers": "Person",
+                "Dépense": "Amount",
+                "Catégorie": "Category",
+                "Notes": "Notes"
+            }
+        )
 
 df = load_data()
 

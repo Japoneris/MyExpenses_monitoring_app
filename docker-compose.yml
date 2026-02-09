@@ -10,5 +10,5 @@ services:
     volumes:
       # Mount the data directory from the host to the container
       # Usage: Provide your data directory path in the .env file or via command line
-      - /home/japoneris/sync_shared/Expenses:/app/data:ro
+      - ${DATA_DIR:-./_data}:/app/data:ro
     restart: unless-stopped
