@@ -10,6 +10,20 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
+def _detect_csv_params(filepath: Path) -> dict:
+    """Detect CSV separator and decimal character by inspecting the first line.
+
+    Returns dict with 'sep' and 'decimal' keys for use with pd.read_csv.
+    If ';' is found in the header, assumes European format (sep=';', decimal=',').
+    Otherwise assumes standard CSV (sep=',', decimal='.').
+    """
+    with open(filepath, "r", encoding="utf-8") as f:
+        first_line = f.readline()
+    if ";" in first_line:
+        return {"sep": ";", "decimal": ","}
+    return {"sep": ",", "decimal": "."}
+
+
 def get_data_dir() -> Path:
     """Get the data directory path.
 
@@ -120,11 +134,11 @@ def load_data() -> pd.DataFrame:
     logger.info(f"Found {len(csv_files)} CSV file(s) in {data_dir}")
 
     for csv_file in csv_files:
+        csv_params = _detect_csv_params(csv_file)
         df = pd.read_csv(
             csv_file,
-            sep=";",
-            decimal=",",
-            encoding="utf-8"
+            encoding="utf-8",
+            **csv_params
         )
         df["source_file"] = csv_file.name
         all_data.append(df)
@@ -209,11 +223,11 @@ def check_invalid_dates() -> pd.DataFrame:
 
     for csv_file in csv_files:
         try:
+            csv_params = _detect_csv_params(csv_file)
             df = pd.read_csv(
                 csv_file,
-                sep=";",
-                decimal=",",
-                encoding="utf-8"
+                encoding="utf-8",
+                **csv_params
             )
 
             # Skip files without a Date column
@@ -253,11 +267,11 @@ def load_single_file(filename: str) -> pd.DataFrame:
     if not filepath.exists():
         return pd.DataFrame()
 
+    csv_params = _detect_csv_params(filepath)
     df = pd.read_csv(
         filepath,
-        sep=";",
-        decimal=",",
-        encoding="utf-8"
+        encoding="utf-8",
+        **csv_params
     )
     df["source_file"] = filename
 
