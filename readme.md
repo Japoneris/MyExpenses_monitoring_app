@@ -8,6 +8,11 @@ Expenses files comes from [`MyExpenses` app](https://www.myexpenses.mobi/fr/) (d
 
 `.csv` files from `MyExpenses`  should be stored in `data/`
 
+**Note**: The supported format is `;` separated and `,` as decimal delimiter.
+It may support `,` separated values and `.` for decimal.
+I prefer the first, as comments are more expressive.
+
+
 ## Features
 
 - Month per month overview
@@ -21,7 +26,12 @@ Expenses files comes from [`MyExpenses` app](https://www.myexpenses.mobi/fr/) (d
 
 ## Screenshots
 
-TODO
+
+Month by Month:
+
+![](static/2024_mm.png)
+
+TODO: Categories pie chart
 
 
 ---
