@@ -26,4 +26,4 @@ EXPOSE 8501
 #HEALTHCHECK CMD curl --fail http://localhost:8501/in2-tech/_stcore/health || exit 1
 
 # Define the entrypoint command to start the Streamlit application
-ENTRYPOINT ["streamlit", "run", "app.py"]
+ENTRYPOINT ["streamlit", "run", "app.py", "--server.baseUrlPath=/expenses"]

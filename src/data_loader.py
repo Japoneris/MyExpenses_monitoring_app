@@ -19,6 +19,7 @@ def _detect_csv_params(filepath: Path) -> dict:
     """
     with open(filepath, "r", encoding="utf-8") as f:
         first_line = f.readline()
+
     if ";" in first_line:
         return {"sep": ";", "decimal": ","}
     return {"sep": ",", "decimal": "."}
@@ -135,6 +136,7 @@ def load_data() -> pd.DataFrame:
 
     for csv_file in csv_files:
         csv_params = _detect_csv_params(csv_file)
+        #print(csv_params, csv_file)
         df = pd.read_csv(
             csv_file,
             encoding="utf-8",
